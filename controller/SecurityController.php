@@ -9,9 +9,9 @@ use Model\Managers\UserManager;
 class SecurityController extends AbstractController{
     // contiendra les méthodes liées à l'authentification : register, login et logout
 
-    public function register () { //ou mettre le pregmatch?
+    public function register () { 
     // 1. Gérer la soumission du formulaire (POST)
-    if (isset($_POST['submit'])) {  
+    if (isset($_POST['submit'])) {  //ici mettre une verification password?
         
         // 2. Valider et filtrer les données 
         $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
