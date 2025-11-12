@@ -9,14 +9,23 @@ use Model\Managers\UserManager;
 class SecurityController extends AbstractController{
     // contiendra les méthodes liées à l'authentification : register, login et logout
 
-    public function register () {
+    public function register () { //ou mettre le pregmatch?
     // 1. Gérer la soumission du formulaire (POST)
-    if (isset($_POST['submit'])) {
+    if (isset($_POST['submit'])) {  
         
         // 2. Valider et filtrer les données 
         $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
         $password = filter_input(INPUT_POST, 'password', FILTER_DEFAULT);
+        $passwordverif = filter_input(INPUT_POST, 'passwordverif', FILTER_DEFAULT);
+        $dateCreation = date('Y-m-d H:i:s'); 
+        $pattern = "(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}";
+
+        if (preg_match($pattern, $password)) {
+            echo "Valid Password";
+            } else {
+            echo "Invalid Password";
+            }
         
         // 3. Hacher le mot de passe
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -25,7 +34,9 @@ class SecurityController extends AbstractController{
         $data = [
             'nickName' => $username,
             'email'    => $email,
-            'password' => $hashedPassword
+            'password' => $hashedPassword,
+            'passwordverif' =>$passwordverif,
+            'creationDate' => $dateCreation
         ];
         
         // 5. Utiliser le UserManager pour insérer l'utilisateur
@@ -33,12 +44,12 @@ class SecurityController extends AbstractController{
         $userManager->add($data);
         
         // 6. Rediriger
-        // $this->redirectTo('login');
+         $this->redirectTo('login');
     }
 
     // 7. Afficher le formulaire (GET)
      return [
-        'view' => VIEW_DIR . 'security/register.html.php',
+        'view' => VIEW_DIR . 'security/register.php',
         'meta_description' => 'Inscription sur le site'
     ];;
 }

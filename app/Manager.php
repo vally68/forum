@@ -50,6 +50,7 @@ abstract class Manager{
         //$values = ['Squalli', 'dfsyfshfbzeifbqefbq', 'sql@gmail.com']
         $values = array_values($data);
         //"username,password,email"
+        //if ($password === $passwordverif) {
         $sql = "INSERT INTO ".$this->tableName."
                 (".implode(',', $keys).") 
                 VALUES
