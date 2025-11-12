@@ -17,7 +17,7 @@ class SecurityController extends AbstractController{
         $username = filter_input(INPUT_POST, 'username', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
         $password = filter_input(INPUT_POST, 'password', FILTER_DEFAULT);
-        $passwordverif = filter_input(INPUT_POST, 'passwordverif', FILTER_DEFAULT);
+       // $passwordverif = filter_input(INPUT_POST, 'passwordverif', FILTER_DEFAULT);
         $dateCreation = date('Y-m-d H:i:s'); 
         $pattern = "(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}";
 
@@ -35,7 +35,7 @@ class SecurityController extends AbstractController{
             'nickName' => $username,
             'email'    => $email,
             'password' => $hashedPassword,
-            'passwordverif' =>$passwordverif,
+           // 'passwordverif' =>$passwordverif,
             'creationDate' => $dateCreation
         ];
         

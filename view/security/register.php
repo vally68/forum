@@ -11,10 +11,10 @@
     <input type="password" name="password" id="password"  minlength="12"
        pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}" 
        required>
-        <label for="password">Verification du mot de passe :</label>
+        <!-- <label for="password">Verification du mot de passe :</label>
     <input type="password" name="passwordverif" id="passwordverif"  minlength="12"
        pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}" 
-       required>
+       required> -->
 
 
     <button type="submit" name="submit">S'inscrire</button>
