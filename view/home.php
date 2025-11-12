@@ -1,3 +1,6 @@
+<header>
+  
+  </header>
 <section class="home-welcome">
   <div class="home-content">
     <h1>BIENVENUE SUR LE FORUM</h1>

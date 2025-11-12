@@ -47,11 +47,11 @@ class SecurityController extends AbstractController{
     // Si le formulaire est soumis
     if (isset($_POST['submit'])) {
         
-        // 1️⃣ Récupération et filtrage des champs
+        // 1 Récupération et filtrage des champs
         $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
         $password = filter_input(INPUT_POST, 'password', FILTER_DEFAULT);
 
-        // 2️⃣ On appelle le UserManager
+        // 2 On appelle le UserManager
         $userManager = new \Model\Managers\UserManager();
 $userData = \App\DAO::select("SELECT * FROM user WHERE email = :email", ['email' => $email], false);
 
@@ -67,9 +67,9 @@ if ($userData && password_verify($password, $userData['password'])) {
 
     }
 
-    // 4️⃣ Affichage du formulaire
+    //  Affichage du formulaire
     return [
-        'view' => VIEW_DIR . 'security/login.html.php',
+        'view' => VIEW_DIR . 'security/login.php',
         'meta_description' => 'Connexion utilisateur',
         'error' => $error ?? null
     ];

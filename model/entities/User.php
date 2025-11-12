@@ -14,6 +14,8 @@ final class User extends Entity {
     private $email;
     private $password;
     private $statut;
+    private $f_role;
+
 
     public function __construct($data){         
         $this->hydrate($data);        
