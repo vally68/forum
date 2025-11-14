@@ -113,4 +113,50 @@ if ($userData && password_verify($password, $userData['password'])) {
     exit;
 }
 
+public function profile() {
+
+        // Vérifie que l'utilisateur est connecté
+        if (!isset($_SESSION['user'])) {
+            header("Location: index.php?ctrl=security&action=login");
+            exit;
+        }
+
+        /** @var User $user */
+        $user = $_SESSION['user'];
+
+        // Gestion de la soumission du formulaire de modification
+        if (isset($_POST['submit'])) {
+
+            $newNick = filter_input(INPUT_POST, 'nickName', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $newEmail = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+
+            if (!$newNick || !$newEmail) {
+                $_SESSION['flash']['error'] = "Tous les champs doivent être remplis.";
+                header("Location: index.php?ctrl=security&action=profile");
+                exit;
+            }
+
+            // Mettre à jour l'utilisateur en BDD
+            $userManager = new UserManager();
+            $user->setNickName($newNick)->setEmail($newEmail);
+            $userManager->update($user); // Assure-toi que UserManager a bien une méthode update
+
+            // Mettre à jour l'utilisateur en session
+            $_SESSION['user'] = $user;
+
+            $_SESSION['flash']['success'] = "Profil mis à jour avec succès !";
+            header("Location: index.php?ctrl=security&action=profile");
+            exit;
+        }
+
+        return [
+            "view" => VIEW_DIR."forum/profile.php",
+            "meta_description" => "Profil de ".$user->getNickName(),
+            "data" => [
+                "user" => $user
+            ]
+        ];
+    }
+
 }
+
