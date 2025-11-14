@@ -13,4 +13,19 @@ class MessageManager extends Manager{
     public function __construct(){
         parent::connect();
     }
+
+    public function findMessagesByTopic($idTopic)
+{
+    $sql = "
+        SELECT *
+        FROM message
+        WHERE id_topic = :idTopic
+        ORDER BY creationDate ASC
+    ";
+
+    return $this->getMultipleResults(
+        DAO::select($sql, ["idTopic" => $idTopic]),
+        $this->className
+    );
+}
 }

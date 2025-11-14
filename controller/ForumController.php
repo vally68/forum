@@ -26,20 +26,48 @@ class ForumController extends AbstractController implements ControllerInterface{
         ];
     }
 
-    public function listTopicsByCategory($id) {
+public function listTopicsByCategory($id) {
 
-        $topicManager = new TopicManager();
-        $categoryManager = new CategoryManager();
-        $category = $categoryManager->findOneById($id);
-        $topics = $topicManager->findTopicsByCategory($id);
+    $categoryManager = new CategoryManager();
+    $category = $categoryManager->findOneById($id);
 
-        return [
-            "view" => VIEW_DIR."forum/listTopics.php",
-            "meta_description" => "Liste des topics par catégorie : ".$category->getName(),
-            "data" => [
-                "category" => $category,
-                "topics" => $topics
-            ]
-        ];
+    // Vérification : si la catégorie n'existe pas, on retourne à la liste des catégories
+    if (!$category) {
+        header("Location: index.php?ctrl=forum&action=index");
+        exit;
     }
+
+    $topicManager = new TopicManager();
+    $topics = $topicManager->findTopicsByCategory($id);
+
+    return [
+        "view" => VIEW_DIR."forum/listTopics.php",
+        "meta_description" => "Liste des topics par catégorie : ".$category->getName(),
+        "data" => [
+            "category" => $category,
+            "topics" => $topics
+        ]
+    ];
+}
+
+public function listMessage($id)
+{
+    $topicManager = new \Model\Managers\TopicManager();
+    $messageManager = new \Model\Managers\MessageManager();
+
+    // ID reçu : ID du topic
+    $topic = $topicManager->findOneById($id);
+    $messages = $messageManager->findMessagesByTopic($id);
+
+    return [
+        "view" => VIEW_DIR."forum/listMessage.php",
+        "meta_description" => "Messages du topic : " . $topic->getTitle(),
+        "data" => [
+            "topic" => $topic,          // ← OBLIGATOIRE
+            "messages" => $messages     // ← OBLIGATOIRE
+        ]
+    ];
+}
+
+
 }
