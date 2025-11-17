@@ -139,7 +139,7 @@ public function profile() {
             // Mettre à jour l'utilisateur en BDD
             $userManager = new UserManager();
             $user->setNickName($newNick)->setEmail($newEmail);
-            $userManager->update($user); // Assure-toi que UserManager a bien une méthode update
+            $userManager->update($user); // a faire plus tard
 
             // Mettre à jour l'utilisateur en session
             $_SESSION['user'] = $user;
@@ -157,6 +157,33 @@ public function profile() {
             ]
         ];
     }
+
+    public function showProfile($id) //récupération des infos de profil
+{
+    $userManager = new UserManager();
+    $user = $userManager->findOneById($id);
+
+    if (!$user) {
+        die("Utilisateur introuvable");
+    }
+
+    return [
+    "view" => VIEW_DIR."forum/profile.php",
+    "meta_description" => "Profil de ".$user->getNickName(),
+    "data" => [
+        "user" => $user
+    ]
+];
+
+}
+
+public function cgu() //générer la vue cgu
+{
+    return [
+        "view" => VIEW_DIR . "forum/cgu.php",
+        "meta_description" => "Conditions Générales d’Utilisation"
+    ];
+}
 
 }
 

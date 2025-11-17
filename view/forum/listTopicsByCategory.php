@@ -3,7 +3,7 @@ $category = $result["data"]['category'];
 $topics = $result["data"]['topics'];
 ?>
 
-<h1>Catégorie : <?= $category->getName() ?></h1>
+<h1>CatégoArie : <?= $category->getName() ?></h1>
 
 <?php if ($topics): ?>
     <ul>

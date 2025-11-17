@@ -3,7 +3,7 @@ $category = $result["data"]['category'];
 $topics = $result["data"]['topics'];
 ?>
 
-<h1>Catégorie : <?= $category->getName() ?></h1>
+<h1>Catégggorie : <?= $category->getName() ?></h1>
 
 <?php if ($topics): ?>
     <ul>
@@ -13,7 +13,12 @@ $topics = $result["data"]['topics'];
     <strong><?= htmlspecialchars($topic->getTitle(), ENT_QUOTES, 'UTF-8') ?></strong>
 </a>
                 </a><br>                <small>Créé le <?= $topic->getCreationDate() ?></small>
-                <small>par <?= $topic->getuser() ?></small>
+                <small>
+    par 
+    <a href="index.php?ctrl=security&action=showProfile&id=<?= $topic->getUser()->getId() ?>">
+        <?= htmlspecialchars($topic->getUser()->getNickName(), ENT_QUOTES, 'UTF-8') ?>
+    </a>
+</small>
 
             </li>
         <?php endforeach; ?>

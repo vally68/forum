@@ -13,4 +13,15 @@ class UserManager extends Manager{
     public function __construct(){
         parent::connect();
     }
+
+    public function findOneById($id)
+{
+    $sql = "SELECT * FROM user WHERE id_user = :id";
+
+    return $this->getOneOrNullResult(
+        DAO::select($sql, ['id' => $id], false),
+        $this->className
+    );
+}
+
 }
