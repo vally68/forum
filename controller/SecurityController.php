@@ -28,6 +28,35 @@ public function register()
             exit;
         }
 
+        // Vérifier si l'utilisateur existe déjà (email ou pseudo)
+        $userManager = new \Model\Managers\UserManager();
+
+        // Vérif email
+        $existingEmail = \App\DAO::select(
+            "SELECT id_user FROM user WHERE email = :email",
+            ['email' => $email],
+            false
+        );
+
+        if ($existingEmail) {
+            $_SESSION['flash']['error'] = "⚠️ Cet email est déjà utilisé.";
+            header('Location: ?ctrl=security&action=register');
+            exit;
+        }
+
+        // Vérif pseudo
+        $existingUsername = \App\DAO::select(
+            "SELECT id_user FROM user WHERE nickName = :username",
+            ['username' => $username],
+            false
+        );
+
+        if ($existingUsername) {
+            $_SESSION['flash']['error'] = "⚠️ Ce nom d'utilisateur est déjà pris.";
+            header('Location: ?ctrl=security&action=register');
+            exit;
+        }
+
         // Vérifier la force du mot de passe coté serveur
         $pattern = "/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{12,}/";
         if (!preg_match($pattern, $password)) {
@@ -38,7 +67,7 @@ public function register()
 
         // Vérifier la correspondance des mots de passe
         if ($password !== $passwordRepeat) {
-            $_SESSION['flash']['error'] = " ☝️ Les  mots de passe ne correspondent pas.";
+            $_SESSION['flash']['error'] = "☝️ Les mots de passe ne correspondent pas.";
             header('Location: ?ctrl=security&action=register');
             exit;
         }
@@ -46,7 +75,7 @@ public function register()
         // Hacher le mot de passe
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-        // Préparer les données qui seront inséres en  BDD
+        // Préparer les données pour la BDD
         $data = [
             'nickName' => $username,
             'email' => $email,
@@ -54,24 +83,23 @@ public function register()
             'creationDate' => $dateCreation
         ];
 
-        // Ajouter l'utilisateur en BDD  via le  UserManager
-        $userManager = new \Model\Managers\UserManager();
+        // Ajouter l'utilisateur en BDD via le UserManager
         $userManager->add($data);
 
-        // Message de réussite 
-        $_SESSION['flash']['success'] = "👍Inscription réussie ! Vous pouvez maintenant vous connecter.";
+        // Message de réussite
+        $_SESSION['flash']['success'] = "👍 Inscription réussie ! Vous pouvez maintenant vous connecter.";
 
-        // Redirection vers login qui fonctionne cette fois
         header('Location: ?ctrl=security&action=login');
         exit;
     }
 
-    // 2. Si aucune soumission ou quand on arrive afficher le formulaire
+    // 2. Si aucune soumission : affichage du formulaire
     return [
         'view' => VIEW_DIR . 'security/register.php',
         'meta_description' => 'Inscription sur le site'
     ];
 }
+
 
     public function login()
 {
