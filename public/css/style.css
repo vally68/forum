@@ -14,7 +14,7 @@ h1 {
   justify-content: center;
   min-height: 80vh;
   padding: 2rem;
-  background: #f5f5f5; /* à ajuster selon ta maquette */
+  background: #f5f5f5; 
 }
 
 .home-content {
@@ -25,7 +25,7 @@ h1 {
 .home-content h1 {
   font-size: 2.5rem;
   margin-bottom: 1rem;
-  color: #333; /* ajuster selon ta maquette */
+  color: #333; 
 }
 
 .home-content p {
@@ -65,4 +65,31 @@ h1 {
 
 .btn-secondary:hover {
   background-color: #565e64;
+}
+
+.home-welcome {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  padding: 2rem;
+  background: #9a9393;
+  overflow: hidden;
+}
+
+.background-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0; /* derrière */
+}
+
+.home-content {
+  position: relative;
+  z-index: 1; /* devant le SVG */
+  max-width: 600px;
+  text-align: center;
 }
