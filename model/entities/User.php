@@ -35,17 +35,56 @@ final class User extends Entity {
     public function setPassword($password){ $this->password = $password; return $this; }
 
     public function getStatut(){ return $this->statut; }
-    public function setStatut($statut){ $this->statut = $statut; return $this; }
+ public function setStatut($statut){
+    // si c’est un tableau, on prend le premier élément
+    if (is_array($statut)) {
+        $statut = $statut[0] ?? null;
+    }
+
+    // si null ou vide, on enregistre null
+    if ($statut === null || $statut === '') {
+        $this->statut = null;
+        return $this;
+    }
+
+    // normalisation
+    $this->statut = ucfirst(strtolower($statut));
+
+    return $this;
+}
+
 
     public function getCreationDate(){ return $this->creationDate; }
     public function setCreationDate($creationDate){ $this->creationDate = $creationDate; return $this; }
 
-    public function hasRole($role)
+public function hasRole($role)
 {
-    return strtolower($this->statut) === strtolower($role);
+    // Si aucun statut défini, aucun rôle
+    if ($this->statut === null) {
+        return false;
+    }
+
+    // Normaliser le statut courant
+    $current = strtolower($this->statut);
+
+    // 💡 Si $role est un tableau → vérifier si l'un des rôles correspond
+    if (is_array($role)) {
+        foreach ($role as $r) {
+            if ($current === strtolower($r)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // 💡 Si $role est une simple string
+    return $current === strtolower($role);
 }
+
+
 
  
 
     public function __toString() { return $this->nickName; }
+    
 }

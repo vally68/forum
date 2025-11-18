@@ -5,6 +5,7 @@ use App\AbstractController;
 use App\ControllerInterface;
 use App\Manager;
 use Model\Managers\UserManager;
+use App\Session;
 
 class SecurityController extends AbstractController{
     // contiendra les fonctions liées à l'authentification : register, login et logout

@@ -69,5 +69,34 @@ public function listMessage($id)
     ];
 }
 
+public function addCategory()
+{
+    $this->restrictTo(["Admin", "Moderator"]);
+
+    $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+    if (!$name) {
+        \App\Session::addFlash("error", "Nom de catégorie invalide.");
+        $this->redirectTo("forum", "index");
+    }
+
+    $manager = new \Model\Managers\CategoryManager();
+    $manager->add(["name" => $name]);
+
+    \App\Session::addFlash("success", "Catégorie ajoutée !");
+    $this->redirectTo("forum", "index");
+}
+
+public function deleteCategory($id)
+{
+    $this->restrictTo(["Admin", "Moderator"]);
+
+    $manager = new \Model\Managers\CategoryManager();
+    $manager->delete($id);
+
+    \App\Session::addFlash("success", "Catégorie supprimée !");
+    $this->redirectTo("forum", "index");
+}
+
 
 }

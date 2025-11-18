@@ -1,13 +1,35 @@
 <?php
-    $categories = $result["data"]['categories']; 
+$categories = $result["data"]['categories']; 
 ?>
 
 <h1>Liste des catégories</h1>
 
-<?php
-foreach($categories as $category ){ ?>
-    <p><a href="index.php?ctrl=forum&action=listTopicsByCategory&id=<?= $category->getId() ?>"><?= $category->getName() ?></a></p>
-<?php }
+<?php foreach($categories as $category): ?>
+    <p>
+        <a href="index.php?ctrl=forum&action=listTopicsByCategory&id=<?= $category->getId() ?>">
+            <?= htmlspecialchars($category->getName()) ?>
+        </a>
+
+        <?php if (\App\Session::isAdmin() || \App\Session::isModerator()): ?>
+            <!-- Bouton suppression -->
+            <a href="index.php?ctrl=forum&action=deleteCategory&id=<?= $category->getId() ?>"
+               style="color:red;"
+               onclick="return confirm('Supprimer cette catégorie ?');">
+               ❌ Supprimer
+            </a>
+        <?php endif; ?>
+    </p>
+<?php endforeach; ?>
 
 
-  
+<!-- 🎯 Formulaire d'ajout de catégorie (ADMIN + MODO uniquement) -->
+<?php if (\App\Session::isAdmin() || \App\Session::isModerator()): ?>
+    <h2>Ajouter une catégorie</h2>
+
+    <form action="index.php?ctrl=forum&action=addCategory" method="post">
+        <label for="name">Nom de la catégorie :</label>
+        <input type="text" id="name" name="name" required>
+
+        <button type="submit" name="submit">Ajouter</button>
+    </form>
+<?php endif; ?>
