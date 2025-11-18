@@ -6,6 +6,7 @@ use App\AbstractController;
 use App\ControllerInterface;
 use Model\Managers\CategoryManager;
 use Model\Managers\TopicManager;
+use Model\Managers\MessageManager;
 
 class ForumController extends AbstractController implements ControllerInterface{
 
@@ -98,5 +99,45 @@ public function deleteCategory($id)
     $this->redirectTo("forum", "index");
 }
 
+public function addTopic($categoryId)
+{
+    // 1. Vérifier que l’utilisateur est connecté
+    $user = Session::getUser();
+    if (!$user) {
+        Session::addFlash("error", "Vous devez être connecté pour créer un topic.");
+        $this->redirectTo("security", "login");
+    }
+
+    // 2. Récupérer les données du formulaire
+    $title   = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $content = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+    if (!$title || !$content) {
+        Session::addFlash("error", "Tous les champs doivent être remplis.");
+        $this->redirectTo("forum", "listTopicsByCategory", $categoryId);
+    }
+
+    // 3. Créer le topic
+    $topicManager   = new TopicManager();
+    $messageManager = new MessageManager();
+
+    $topicId = $topicManager->add([
+        "title"        => $title,
+        "creationDate" => date("Y-m-d H:i:s"),
+        "user_id"      => $user->getId(),
+        "id_category"  => $categoryId
+    ]);
+
+    // 4. Créer le premier message lié à ce topic
+    $messageManager->add([
+        "texte"        => $content,
+        "creationDate" => date("Y-m-d H:i:s"),
+        "id_topic"     => $topicId
+    ]);
+
+    // 5. Message + redirection
+    Session::addFlash("success", "Topic créé avec succès !");
+    $this->redirectTo("forum", "listTopicsByCategory", $categoryId);
+}
 
 }

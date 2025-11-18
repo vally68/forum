@@ -1,25 +1,43 @@
 <?php
 $category = $result["data"]['category'];
 $topics = $result["data"]['topics'];
+$user = \App\Session::getUser();
 ?>
 
-<h1>Catégggorie : <?= $category->getName() ?></h1>
+<h1>Catégorie : <?= htmlspecialchars($category->getName(), ENT_QUOTES, 'UTF-8') ?></h1>
+
+<?php if ($user): ?>
+    <h2>Créer un nouveau topic</h2>
+
+    <form action="index.php?ctrl=forum&action=addTopic&id=<?= $category->getId() ?>" method="post">
+        <label for="title">Titre du topic :</label><br>
+        <input type="text" name="title" id="title" required><br><br>
+
+        <label for="content">Message :</label><br>
+        <textarea name="content" id="content" required></textarea><br><br>
+
+        <button type="submit" name="submit">Créer le topic</button>
+    </form>
+<?php else: ?>
+    <p><em>Vous devez être connecté pour créer un topic.</em></p>
+<?php endif; ?>
+
+<h2>Topics :</h2>
 
 <?php if ($topics): ?>
     <ul>
         <?php foreach ($topics as $topic): ?>
             <li>
-<a href="index.php?ctrl=forum&action=listMessage&id=<?= $topic->getId() ?>">
-    <strong><?= htmlspecialchars($topic->getTitle(), ENT_QUOTES, 'UTF-8') ?></strong>
-</a>
-                </a><br>                <small>Créé le <?= $topic->getCreationDate() ?></small>
+                <a href="index.php?ctrl=forum&action=listMessage&id=<?= $topic->getId() ?>">
+                    <strong><?= htmlspecialchars($topic->getTitle(), ENT_QUOTES, 'UTF-8') ?></strong>
+                </a><br>
+                <small>Créé le <?= $topic->getCreationDate() ?></small>
                 <small>
-    par 
-    <a href="index.php?ctrl=security&action=showProfile&id=<?= $topic->getUser()->getId() ?>">
-        <?= htmlspecialchars($topic->getUser()->getNickName(), ENT_QUOTES, 'UTF-8') ?>
-    </a>
-</small>
-
+                    par 
+                    <a href="index.php?ctrl=security&action=showProfile&id=<?= $topic->getUser()->getId() ?>">
+                        <?= htmlspecialchars($topic->getUser()->getNickName(), ENT_QUOTES, 'UTF-8') ?>
+                    </a>
+                </small>
             </li>
         <?php endforeach; ?>
     </ul>
