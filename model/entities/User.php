@@ -14,7 +14,8 @@ final class User extends Entity {
     private $email;
     private $password;
     private $statut;
-    private $f_role;
+    private $creationDate;
+    
 
 
     public function __construct($data){         
@@ -36,9 +37,15 @@ final class User extends Entity {
     public function getStatut(){ return $this->statut; }
     public function setStatut($statut){ $this->statut = $statut; return $this; }
 
-    public function hasRole($role){
-        return $this->statut === $role;
-    }
+    public function getCreationDate(){ return $this->creationDate; }
+    public function setCreationDate($creationDate){ $this->creationDate = $creationDate; return $this; }
+
+    public function hasRole($role)
+{
+    return strtolower($this->statut) === strtolower($role);
+}
+
+ 
 
     public function __toString() { return $this->nickName; }
 }

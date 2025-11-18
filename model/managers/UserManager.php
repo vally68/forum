@@ -24,4 +24,15 @@ class UserManager extends Manager{
     );
 }
 
+public function findAllUsers()
+{
+    $sql = "SELECT * FROM user ORDER BY creationDate DESC";
+
+    return $this->getMultipleResults(
+        DAO::select($sql),
+        $this->className
+    );
+}
+
+
 }

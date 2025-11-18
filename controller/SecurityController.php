@@ -112,7 +112,18 @@ public function register()
 
         // 2 On appelle le UserManager
         $userManager = new \Model\Managers\UserManager();
-$userData = \App\DAO::select("SELECT * FROM user WHERE email = :email", ['email' => $email], false);
+$userData = \App\DAO::select(
+    "SELECT 
+        id_user AS id, 
+        nickName,
+        email,
+        password,
+        statut
+     FROM user 
+     WHERE email = :email",
+    ['email' => $email],
+    false
+);
 
 if ($userData && password_verify($password, $userData['password'])) {
     // Stocker un objet User, pas un tableau
