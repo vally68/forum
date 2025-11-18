@@ -33,6 +33,25 @@ public function findAllUsers()
         $this->className
     );
 }
+public function deleteUser($id)
+{
+    $sql = "DELETE FROM user WHERE id_user = :id";
+    return DAO::delete($sql, ['id' => $id]);
+}
 
+public function updateUser($id, $data)
+{
+    $fields = [];
+    $params = ["id" => $id];
+
+    foreach ($data as $key => $value) {
+        $fields[] = "$key = :$key";
+        $params[$key] = $value;
+    }
+
+    $sql = "UPDATE user SET " . implode(", ", $fields) . " WHERE id_user = :id";
+
+    return DAO::update($sql, $params);
+}
 
 }

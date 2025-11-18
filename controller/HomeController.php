@@ -4,6 +4,7 @@ namespace Controller;
 use App\AbstractController;
 use App\ControllerInterface;
 use Model\Managers\UserManager;
+use App\Session;
 
 class HomeController extends AbstractController implements ControllerInterface {
 
@@ -28,6 +29,63 @@ class HomeController extends AbstractController implements ControllerInterface {
             ]
         ];
     }
+
+public function editUser($id)
+{
+    $this->restrictTo("Admin");
+
+    $manager = new UserManager();
+    $user = $manager->findOneById($id);
+
+    if (!$user) {
+        Session::addFlash("error", "Utilisateur introuvable.");
+        $this->redirectTo("home", "users");
+    }
+
+    return [
+        "view" => VIEW_DIR."security/editUser.php",
+        "meta_description" => "Modifier un utilisateur",
+        "data" => [
+            "user" => $user
+        ]
+    ];
+}
+
+public function updateUser($id)
+{
+    $this->restrictTo("Admin");
+
+    $nick = filter_input(INPUT_POST, 'nickName', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
+    $statut = filter_input(INPUT_POST, 'statut', FILTER_SANITIZE_SPECIAL_CHARS);
+
+    if (!$nick || !$email || !$statut) {
+        Session::addFlash("error", "Champs invalides.");
+        $this->redirectTo("home","users");
+    }
+
+    $manager = new UserManager();
+    $manager->updateUser($id, [
+        "nickName" => $nick,
+        "email" => $email,
+        "statut" => $statut
+    ]);
+
+    Session::addFlash("success", "Utilisateur mis à jour.");
+    $this->redirectTo("home","users");
+}
+
+
+public function deleteUser($id)
+{
+    $this->restrictTo("Admin");
+
+    $manager = new UserManager();
+    $manager->deleteUser($id);
+
+    Session::addFlash("success", "Utilisateur supprimé.");
+    $this->redirectTo("home","users");
+}
 
 
 
