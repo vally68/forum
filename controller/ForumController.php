@@ -8,6 +8,8 @@ use Model\Managers\CategoryManager;
 use Model\Managers\TopicManager;
 use Model\Managers\MessageManager;
 
+
+
 class ForumController extends AbstractController implements ControllerInterface{
 
     public function index() {

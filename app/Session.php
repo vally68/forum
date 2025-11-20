@@ -27,7 +27,7 @@ class Session{
     }
 
     /**
-    *   met un user dans la session (pour le maintenir connecté)
+    *   mettre un user dans la session
     */
     public static function setUser($user){
         $_SESSION["user"] = $user;
