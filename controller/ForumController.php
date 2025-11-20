@@ -64,8 +64,8 @@ public function listMessage($id)
         "view" => VIEW_DIR."forum/listMessage.php",
         "meta_description" => "Messages du topic : " . $topic->getTitle(),
         "data" => [
-            "topic" => $topic,          // ← OBLIGATOIRE
-            "messages" => $messages     // ← OBLIGATOIRE
+            "topic" => $topic,         
+            "messages" => $messages     
         ]
     ];
 }
