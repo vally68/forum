@@ -58,16 +58,22 @@ public function listMessage($id)
     $topicManager = new \Model\Managers\TopicManager();
     $messageManager = new \Model\Managers\MessageManager();
 
-    // ID reçu : ID du topic
     $topic = $topicManager->findOneById($id);
+
+    //  Ajout : vérifier si le topic existe
+    if (!$topic) {
+        \App\Session::addFlash("error", "Message introuvable.");
+        $this->redirectTo("forum", "index");
+    }
+
     $messages = $messageManager->findMessagesByTopic($id);
 
     return [
         "view" => VIEW_DIR."forum/listMessage.php",
         "meta_description" => "Messages du topic : " . $topic->getTitle(),
         "data" => [
-            "topic" => $topic,         
-            "messages" => $messages     
+            "topic" => $topic,
+            "messages" => $messages
         ]
     ];
 }

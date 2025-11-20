@@ -1,7 +1,13 @@
 <?php
+
+
 $category = $result["data"]['category'];
 $topics = $result["data"]['topics'];
 $user = \App\Session::getUser();
+$messageManager = new \Model\Managers\MessageManager();
+
+
+
 ?>
 
 <h1>Catégorie : <?= htmlspecialchars($category->getName(), ENT_QUOTES, 'UTF-8') ?></h1>
@@ -31,6 +37,14 @@ $user = \App\Session::getUser();
                 <a href="index.php?ctrl=forum&action=listMessage&id=<?= $topic->getId() ?>">
                     <strong><?= htmlspecialchars($topic->getTitle(), ENT_QUOTES, 'UTF-8') ?></strong>
                 </a><br>
+                
+                <!-- Récupérer le premier message du topic -->
+                <?php 
+                $messages = $messageManager->findMessagesByTopic($topic->getId());
+                $firstMessage = $messages[0] ?? null;
+                 var_dump($firstMessage); // Affiche le premier message
+                ?>
+                
                 <small>Créé le <?= $topic->getCreationDate() ?></small>
                 <small>
                     par 
@@ -40,6 +54,7 @@ $user = \App\Session::getUser();
                 </small>
             </li>
         <?php endforeach; ?>
+        
     </ul>
 <?php else: ?>
     <p>Aucun topic dans cette catégorie pour le moment.</p>

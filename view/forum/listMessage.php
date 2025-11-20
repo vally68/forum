@@ -8,7 +8,8 @@ $category = $topic->getCategory();
 $categoryId = is_object($category) ? $category->getId() : $category;
 ?>
 
-<h1>Topic : <?= htmlspecialchars($topic->getTitle(), ENT_QUOTES, 'UTF-8') ?></h1>
+<h1>Topic : <?= htmlspecialchars($topic->getTitle(), ENT_QUOTES, 'UTF-8')  ?></h1>
+
 
 <?php if (!empty($messages)): ?>
     <ul>
