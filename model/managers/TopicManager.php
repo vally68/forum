@@ -27,5 +27,4 @@ class TopicManager extends Manager{
         $this->className
     );
 }
-
 }

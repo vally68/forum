@@ -39,7 +39,7 @@ public function deleteUser($id)
     return DAO::delete($sql, ['id' => $id]);
 }
 
-public function updateUser($id, $data)
+public function updateUser($id, $data) 
 {
     $fields = [];
     $params = ["id" => $id];

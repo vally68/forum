@@ -57,13 +57,12 @@ public function listMessage($id)
 {
     $topicManager = new \Model\Managers\TopicManager();
     $messageManager = new \Model\Managers\MessageManager();
-
     $topic = $topicManager->findOneById($id);
 
     //  Ajout : vérifier si le topic existe
     if (!$topic) {
-        \App\Session::addFlash("error", "Message introuvable.");
-        $this->redirectTo("forum", "index");
+        \App\Session::addFlash("error", "Message introuvable, y'a un souci quelque part -_- ."); //message flash(reste quelque secondes)
+        $this->redirectTo("forum", "index"); //redirection 
     }
 
     $messages = $messageManager->findMessagesByTopic($id);
@@ -73,7 +72,7 @@ public function listMessage($id)
         "meta_description" => "Messages du topic : " . $topic->getTitle(),
         "data" => [
             "topic" => $topic,
-            "messages" => $messages
+             "messages" => $messages
         ]
     ];
 }
@@ -117,8 +116,8 @@ public function addTopic($categoryId)
     }
 
     // 2. Récupérer les données du formulaire
-    $title   = filter_input(INPUT_POST, 'title', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-    $content = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $title   = filter_input(INPUT_POST, 'title');
+    $content = filter_input(INPUT_POST, 'content');
 
     if (!$title || !$content) {
         Session::addFlash("error", "Tous les champs doivent être remplis.");
@@ -138,9 +137,9 @@ public function addTopic($categoryId)
 
     // 4. Créer le premier message lié à ce topic
     $messageManager->add([
-        "texte"        => $content,
-        "creationDate" => date("Y-m-d H:i:s"),
-        "id_topic"     => $topicId
+         "texte"        => $content,
+         "creationDate" => date("Y-m-d H:i:s"),
+         "id_topic"     => $topicId
     ]);
 
     // 5. Message + redirection
