@@ -26,6 +26,12 @@ final class Topic extends Entity {
         return $this;
     }
 
+    // ✅ ajout d’un alias pour compatibilité avec la colonne SQL `id_topic`
+    public function setId_topic($id_topic){
+        $this->id = $id_topic;
+        return $this;
+    }
+
     /** TITLE */
     public function getTitle(){
         return $this->title;

@@ -14,17 +14,25 @@ class TopicManager extends Manager{
     }
 
     // récupérer tous les topics d'une catégorie spécifique (par son id)
-    public function findTopicsByCategory($idCategory) {
+public function findTopicsByCategory($idCategory)
+{
+    $sql = "
+        SELECT 
+            t.id_topic, 
+            t.title, 
+            t.creationDate, 
+            
+            t.id_category, 
+            t.user_id
+        FROM topic t
+        WHERE t.id_category = :id
+        ORDER BY t.creationDate DESC
+    ";
 
-    $sql = "SELECT * 
-            FROM " . $this->tableName . " 
-            WHERE id_category = :id
-            ORDER BY creationDate DESC";
-
-    // la requête renvoie plusieurs enregistrements --> getMultipleResults
     return $this->getMultipleResults(
         DAO::select($sql, ['id' => $idCategory]),
         $this->className
     );
 }
+
 }

@@ -29,66 +29,65 @@ abstract class Manager{
         );
     }
     
-    public function findOneById($id){
+public function findOneById($id) {
 
-        $sql = "SELECT *
-                FROM ".$this->tableName." a
-                WHERE a.id_".$this->tableName." = :id
-                ";
+    $primaryKey = "id_" . $this->tableName; // ex: id_topic, id_user, id_category
 
-        return $this->getOneOrNullResult(
-            DAO::select($sql, ['id' => $id], false), 
-            $this->className
-        );
-    }
+    $sql = "SELECT *
+            FROM " . $this->tableName . " a
+            WHERE $primaryKey = :id";
+
+    return $this->getOneOrNullResult(
+        DAO::select($sql, ['id' => $id], false),
+        $this->className
+    );
+}
+
 
     //$data = ['username' => 'Squalli', 'password' => 'dfsyfshfbzeifbqefbq', 'email' => 'sql@gmail.com'];
 
-    public function add($data){ 
-        //$keys = ['username' , 'password', 'email']
-        $keys = array_keys($data);
-        //$values = ['Squalli', 'dfsyfshfbzeifbqefbq', 'sql@gmail.com']
-        $values = array_values($data);
-        //"username,password,email"
-        //if ($keys === $values) { //piste 
-        $sql = "INSERT INTO ".$this->tableName."
-                (".implode(',', $keys).") 
-                VALUES
-                ('".implode("','",$values)."')";
-                //"'Squalli', 'dfsyfshfbzeifbqefbq', 'sql@gmail.com'"
-        /*
-            INSERT INTO user (username,password,email) VALUES ('Squalli', 'dfsyfshfbzeifbqefbq', 'sql@gmail.com') 
-        */
-        try{
-            return DAO::insert($sql);
-        }
-        catch(\PDOException $e){
-            echo $e->getMessage();
-            die();
-        }
+public function add($data)
+{
+    $keys = array_keys($data);
+    $fields = implode(', ', $keys);
+    $placeholders = ':' . implode(', :', $keys);
+
+    $sql = "INSERT INTO {$this->tableName} ($fields) VALUES ($placeholders)";
+
+    try {
+        return DAO::insert($sql, $data);
+    } catch (\PDOException $e) {
+        echo $e->getMessage();
+        die();
     }
+}
+
     
-    public function delete($id){
-        $sql = "DELETE FROM ".$this->tableName."
-                WHERE id_".$this->tableName." = :id
-                ";
+   public function delete($id){
+    $primaryKey = "id_" . $this->tableName;
 
-        return DAO::delete($sql, ['id' => $id]); 
-    }
+    $sql = "DELETE FROM ".$this->tableName."
+            WHERE $primaryKey = :id";
 
-    private function generate($rows, $class){
-        foreach($rows as $row){
-            yield new $class($row);
-        }
-    }
+    return DAO::delete($sql, ['id' => $id]); 
+}
+
+
+
     
-    protected function getMultipleResults($rows, $class){
-
-        if(is_iterable($rows)){
-            return $this->generate($rows, $class);
+protected function getMultipleResults($rows, $class)
+{
+    if (is_iterable($rows)) {
+        $results = [];
+        foreach ($rows as $row) {
+            $results[] = new $class($row);
         }
-        else return null;
+        return $results;
     }
+    return [];
+}
+
+
 
     protected function getOneOrNullResult($row, $class){
 

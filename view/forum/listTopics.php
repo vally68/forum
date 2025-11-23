@@ -1,16 +1,13 @@
 <?php
-
-
 $category = $result["data"]['category'];
 $topics = $result["data"]['topics'];
 $user = \App\Session::getUser();
 $messageManager = new \Model\Managers\MessageManager();
-
-
-
 ?>
+
 <meta charset="UTF-8">
-<h1>Catégorie : <?= htmlspecialchars($category->getName(), ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8', false) ?></h1>
+
+<h1>Catégorie : <?= htmlspecialchars($category->getName(), ENT_QUOTES, 'UTF-8') ?></h1>
 
 <?php if ($user): ?>
     <h2>Créer un nouveau topic</h2>
@@ -33,23 +30,28 @@ $messageManager = new \Model\Managers\MessageManager();
 <?php if ($topics): ?>
     <ul>
         <?php foreach ($topics as $topic): ?>
-            <?php var_dump($topic) ?>
             <li>
                 <a href="index.php?ctrl=forum&action=listMessage&id=<?= $topic->getId() ?>">
-                    <strong><?= $topic->getTitle() ?></strong>
+                    <strong><?= htmlspecialchars($topic->getTitle(), ENT_QUOTES, 'UTF-8') ?></strong>
                 </a><br>
-                
-                <!-- Récupérer le premier message du topic -->
+
                 <?php 
+                // Récupérer le premier message du topic
                 $messages = $messageManager->findMessagesByTopic($topic->getId());
-                $firstMessage = $messages[0] ?? null;
-                //  var_dump($firstMessage); // Affiche le premier message
-                 // Affiche le premier message
-                 
-              
+                if ($messages instanceof \Traversable) {
+                    $messages = iterator_to_array($messages);
+                }
+                $firstMessage = !empty($messages) ? $messages[0] : null;
                 ?>
-                
-                <small>Créé le <?= $topic->getCreationDate() ?></small>
+
+                <?php if ($firstMessage): ?>
+                    <p>
+                        <em>Premier message :</em>
+                        <?= nl2br(htmlspecialchars($firstMessage->getTexte(), ENT_QUOTES, 'UTF-8')) ?>
+                    </p>
+                <?php endif; ?>
+
+                <small>Créé le <?= htmlspecialchars($topic->getCreationDate()) ?></small>
                 <small>
                     par 
                     <a href="index.php?ctrl=security&action=showProfile&id=<?= $topic->getUser()->getId() ?>">
@@ -58,7 +60,6 @@ $messageManager = new \Model\Managers\MessageManager();
                 </small>
             </li>
         <?php endforeach; ?>
-        
     </ul>
 <?php else: ?>
     <p>Aucun topic dans cette catégorie pour le moment.</p>

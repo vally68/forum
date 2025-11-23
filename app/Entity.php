@@ -1,39 +1,39 @@
 <?php
 namespace App;
 
-abstract class Entity{
+abstract class Entity {
 
-    protected function hydrate($data){
+    protected function hydrate($data) {
+        foreach ($data as $field => $value) {
 
-        foreach($data as $field => $value){
-            // field = topic_id
-            // fieldarray = ['topic','id']
-            $fieldArray = explode("_", $field);
-
-            if(isset($fieldArray[1]) && $fieldArray[1] == "id"){
-                // manName = TopicManager 
-                $manName = ucfirst($fieldArray[0])."Manager";
-                // FQCName = Model\Managers\TopicManager;
-                $FQCName = "Model\Managers\\".$manName;
-                
-                // man = new Model\Managers\TopicManager
-                $man = new $FQCName();
-                // value = Model\Managers\TopicManager->findOneById(1)
-                $value = $man->findOneById($value);
+            // --- Gestion de la clé primaire ---
+            if ($field === 'id_' . strtolower((new \ReflectionClass($this))->getShortName())) {
+                // ex: id_topic → setId()
+                $method = 'setId';
+            }
+            // --- Gestion des clés étrangères ---
+            elseif (substr($field, -3) === '_id') {
+                $entity = ucfirst(substr($field, 0, -3)); // ex: user_id → User
+                $managerClass = "Model\\Managers\\" . $entity . "Manager";
+                if (class_exists($managerClass)) {
+                    $manager = new $managerClass();
+                    $value = $manager->findOneById($value);
+                }
+                $method = "set" . $entity;
+            }
+            // --- Champs normaux ---
+            else {
+                $method = 'set' . ucfirst($field);
             }
 
-            // fabrication du nom du setter à appeler (ex: setName)
-            $method = "set".ucfirst($fieldArray[0]);
-            
-            // si setName est une méthode qui existe dans l'entité (this)
-            if(method_exists($this, $method)){
-                // $this->setName("valeur")
+            // --- Appel du setter si existant ---
+            if (method_exists($this, $method)) {
                 $this->$method($value);
             }
         }
     }
 
-    public function getClass(){
+    public function getClass() {
         return get_class($this);
     }
 }

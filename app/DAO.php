@@ -36,19 +36,25 @@ abstract class DAO{
         );
     }
 
-    public static function insert($sql){
-        try{
-            $stmt = self::$bdd->prepare($sql);
-            $stmt->execute();
-            //on renvoie l'id de l'enregistrement qui vient d'être ajouté en base, 
-            //pour s'en servir aussitôt dans le controleur
-            return self::$bdd->lastInsertId();
-            
-        }
-        catch(\Exception $e){
-            echo $e->getMessage();
-        }
+public static function insert($sql, $params = [])
+{
+    try {
+        $stmt = self::$bdd->prepare($sql);
+        $stmt->execute($params);
+
+        // ✅ On récupère le dernier ID inséré correctement
+        $lastId = self::$bdd->lastInsertId();
+
+        // ✅ On ferme proprement le curseur
+        $stmt->closeCursor();
+
+        return $lastId; // on retourne l’ID exact de la ligne insérée
+    } catch (\Exception $e) {
+        echo "Erreur SQL : " . $e->getMessage();
+        return false;
     }
+}
+
 
     public static function update($sql, $params){
         try{
