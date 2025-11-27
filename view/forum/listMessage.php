@@ -17,30 +17,35 @@ $user = \App\Session::getUser();
 
                 <?php if ($user): ?>
                     <?php
+                        // ✅ Autorisations :
+                        //  - Admin / Modérateur : ok
+                        //  - Sinon : seulement le créateur du topic (puisque ta BDD ne stocke pas l'auteur du message)
                         $canEdit = (
                             in_array($user->getStatut(), ['Admin', 'Moderator'], true)
-                            || $user->getId() === $msg->getUser()->getId()
+                            || ($topic->getUser() && $user->getId() === $topic->getUser()->getId())
                         );
                     ?>
 
                     <?php if ($canEdit): ?>
-    <div class="message-actions">
-        <form class="edit-form" 
-              action="index.php?ctrl=forum&action=updateMessage&id=<?= $msg->getId() ?>" 
-              method="post">
-            <div class="edit-row">
-                <textarea name="texte" rows="1" required><?= htmlspecialchars($msg->getTexte()) ?></textarea>
-                <button type="submit" class="btn-edit">✏️ Modifier</button>
-                <form action="index.php?ctrl=forum&action=deleteMessage&id=<?= $msg->getId() ?>" method="post">
-                    <button type="submit" class="btn-delete" onclick="return confirm('Supprimer ce message ?');">
-                        🗑️ Supprimer
-                    </button>
-                </form>
-            </div>
-        </form>
-    </div>
-<?php endif; ?>
+                        <div class="message-actions">
+                            <form class="edit-form"
+                                  action="index.php?ctrl=forum&action=updateMessage&id=<?= $msg->getId() ?>"
+                                  method="post" style="display:inline-block;margin-right:8px;">
+                                <div class="edit-row">
+                                    <textarea name="texte" rows="1" required><?= htmlspecialchars($msg->getTexte()) ?></textarea>
+                                    <button type="submit" class="btn-edit">✏️ Modifier</button>
+                                </div>
+                            </form>
 
+                            <form action="index.php?ctrl=forum&action=deleteMessage&id=<?= $msg->getId() ?>"
+                                  method="post" style="display:inline-block;">
+                                <button type="submit" class="btn-delete"
+                                        onclick="return confirm('Supprimer ce message ?');">
+                                    🗑️ Supprimer
+                                </button>
+                            </form>
+                        </div>
+                    <?php endif; ?>
                 <?php endif; ?>
             </li>
         <?php endforeach; ?>

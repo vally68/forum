@@ -14,6 +14,7 @@ final class Message extends Entity
     private $texte;
     private $creationDate;
     private $topic;
+    private $user;
 
     public function __construct($data)
     {
@@ -61,6 +62,17 @@ final class Message extends Entity
     public function setTopic($topic)
     {
         $this->topic = $topic;
+        return $this;
+    }
+
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function setUser($user)
+    {
+        $this->user = $user;
         return $this;
     }
 
