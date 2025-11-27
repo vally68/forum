@@ -1,52 +1,60 @@
 <?php
+
 namespace App;
 
-class Session{
-
+class Session
+{
     private static $categories = ['error', 'success'];
 
     /**
     *   ajoute un message en session, dans la catégorie $categ
     */
-    public static function addFlash($categ, $msg){
+    public static function addFlash($categ, $msg)
+    {
         $_SESSION[$categ] = $msg;
     }
 
     /**
     *   renvoie un message de la catégorie $categ, s'il y en a !
     */
-    public static function getFlash($categ){
-        
-        if(isset($_SESSION[$categ])){
-            $msg = $_SESSION[$categ];  
+    public static function getFlash($categ)
+    {
+
+        if (isset($_SESSION[$categ])) {
+            $msg = $_SESSION[$categ];
             unset($_SESSION[$categ]);
+        } else {
+            $msg = "";
         }
-        else $msg = "";
-        
+
         return $msg;
     }
 
     /**
     *   mettre un user dans la session
     */
-    public static function setUser($user){
+    public static function setUser($user)
+    {
         $_SESSION["user"] = $user;
     }
 
-    public static function getUser(){
+    public static function getUser()
+    {
         return (isset($_SESSION['user'])) ? $_SESSION['user'] : false;
     }
 
-    public static function isAdmin(){
-        // attention de bien définir la méthode "hasRole" dans l'entité User en fonction de la façon dont sont gérés les rôles en base de données. 
+    public static function isAdmin()
+    {
+        // attention de bien définir la méthode "hasRole" dans l'entité User en fonction de la façon dont sont gérés les rôles en base de données.
         // exemple si l'admin est nommé "dieu" la m"thode hasrole sera hasRole("dieu"). Attention à la casse.
-        if(self::getUser() && self::getUser()->hasRole("Admin")){
+        if (self::getUser() && self::getUser()->hasRole("Admin")) {
             return true;
         }
         return false;
     }
-public static function isModerator(){
-    return (self::getUser() && self::getUser()->hasRole("Moderator"));
-}
+    public static function isModerator()
+    {
+        return (self::getUser() && self::getUser()->hasRole("Moderator"));
+    }
 
 }

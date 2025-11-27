@@ -1,9 +1,11 @@
 <?php
+
 namespace App;
 
-abstract class Entity {
-
-    protected function hydrate($data) {
+abstract class Entity
+{
+    protected function hydrate($data)
+    {
         foreach ($data as $field => $value) {
 
             // --- Gestion de la clé primaire ---
@@ -33,7 +35,8 @@ abstract class Entity {
         }
     }
 
-    public function getClass() {
+    public function getClass()
+    {
         return get_class($this);
     }
 }

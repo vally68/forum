@@ -1,22 +1,24 @@
 <?php
+
 namespace Model\Managers;
 
 use App\Manager;
 use App\DAO;
 
-class TopicManager extends Manager{
-
+class TopicManager extends Manager
+{
     protected $className = "Model\Entities\Topic";
     protected $tableName = "topic";
 
-    public function __construct(){
+    public function __construct()
+    {
         parent::connect();
     }
 
     // récupérer tous les topics d'une catégorie spécifique (par son id)
-public function findTopicsByCategory($idCategory)
-{
-    $sql = "
+    public function findTopicsByCategory($idCategory)
+    {
+        $sql = "
         SELECT 
             t.id_topic, 
             t.title, 
@@ -29,23 +31,23 @@ public function findTopicsByCategory($idCategory)
         ORDER BY t.creationDate DESC
     ";
 
-    return $this->getMultipleResults(
-        DAO::select($sql, ['id' => $idCategory]),
-        $this->className
-    );
-}
+        return $this->getMultipleResults(
+            DAO::select($sql, ['id' => $idCategory]),
+            $this->className
+        );
+    }
 
-public function update($id, $data)
-{
-    $sql = "UPDATE " . $this->tableName . "
+    public function update($id, $data)
+    {
+        $sql = "UPDATE " . $this->tableName . "
             SET title = :title
             WHERE id_topic = :id";
 
-    DAO::update($sql, [
-        "title" => $data["title"],
-        "id"    => $id
-    ]);
-}
+        DAO::update($sql, [
+            "title" => $data["title"],
+            "id"    => $id
+        ]);
+    }
 
 
 }

@@ -37,9 +37,9 @@ $editingId = $_GET['edit'] ?? null;
 
                             <td>
                                 <select name="statut">
-                                    <option value="User" <?= $user->getStatut()=="User"?"selected":"" ?>>Utilisateur</option>
-                                    <option value="Admin" <?= $user->getStatut()=="Admin"?"selected":"" ?>>Admin</option>
-                                    <option value="Moderator" <?= $user->getStatut()=="Moderator"?"selected":"" ?>>Modérateur</option>
+                                    <option value="User" <?= $user->getStatut() == "User" ? "selected" : "" ?>>Utilisateur</option>
+                                    <option value="Admin" <?= $user->getStatut() == "Admin" ? "selected" : "" ?>>Admin</option>
+                                    <option value="Moderator" <?= $user->getStatut() == "Moderator" ? "selected" : "" ?>>Modérateur</option>
                                 </select>
                             </td>
 

@@ -16,7 +16,7 @@ $user = \App\Session::getUser();
                 </div>
 
                 <?php if ($user): ?>
-                    <?php 
+                    <?php
                         $canEdit = (
                             in_array($user->getStatut(), ['Admin', 'Moderator'], true)
                             || $user->getId() === $msg->getUser()->getId()

@@ -1,10 +1,11 @@
 <?php
+
 namespace Model\Entities;
 
 use App\Entity;
 
-final class Topic extends Entity {
-
+final class Topic extends Entity
+{
     private $id;
     private $title;
     private $user;
@@ -12,77 +13,92 @@ final class Topic extends Entity {
     private $creationDate;
     private $closed;
 
-    public function __construct($data){         
-        $this->hydrate($data);        
+    public function __construct($data)
+    {
+        $this->hydrate($data);
     }
 
     /** ID */
-    public function getId(){
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function setId($id){
+    public function setId($id)
+    {
         $this->id = $id;
         return $this;
     }
 
     // ✅ ajout d’un alias pour compatibilité avec la colonne SQL `id_topic`
-    public function setId_topic($id_topic){
+    public function setId_topic($id_topic)
+    {
         $this->id = $id_topic;
         return $this;
     }
 
     /** TITLE */
-    public function getTitle(){
+    public function getTitle()
+    {
         return $this->title;
     }
 
-    public function setTitle($title){
+    public function setTitle($title)
+    {
         $this->title = $title;
         return $this;
     }
 
     /** USER */
-    public function getUser(){
+    public function getUser()
+    {
         return $this->user;
     }
 
-    public function setUser($user){
+    public function setUser($user)
+    {
         $this->user = $user;
         return $this;
     }
 
     /** CATEGORY */
-    public function getCategory(){
+    public function getCategory()
+    {
         return $this->category;
     }
 
-    public function setCategory($category){
+    public function setCategory($category)
+    {
         $this->category = $category;
         return $this;
     }
 
     /** CREATION DATE */
-    public function getCreationDate(){
+    public function getCreationDate()
+    {
         return $this->creationDate;
     }
 
-    public function setCreationDate($creationDate){
+    public function setCreationDate($creationDate)
+    {
         $this->creationDate = $creationDate;
         return $this;
     }
 
     /** CLOSED */
-    public function isClosed(){
+    public function isClosed()
+    {
         return $this->closed;
     }
 
-    public function setClosed($closed){
+    public function setClosed($closed)
+    {
         $this->closed = $closed;
         return $this;
     }
 
-    public function __toString(){
+    public function __toString()
+    {
         return $this->title;
     }
 }

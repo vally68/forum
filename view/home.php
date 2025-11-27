@@ -14,7 +14,7 @@ $lastMessages = isset($result["data"]["lastMessages"]) ? $result["data"]["lastMe
       fill="none" stroke="#F9F4DA" stroke-width="150" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
 
-<div id="messages-path">
+ <div id="messages-path"> <!-- chemin des messages sur le serpent -->
   <?php if (!empty($lastMessages)): ?>
     <?php foreach ($lastMessages as $msg): ?>
       <a class="message-bubble"
@@ -37,5 +37,6 @@ $lastMessages = isset($result["data"]["lastMessages"]) ? $result["data"]["lastMe
     </div>
   </div>
 </section>
+
 
 <script src="public/js/homeMessages.js"></script>

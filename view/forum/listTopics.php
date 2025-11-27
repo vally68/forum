@@ -36,14 +36,14 @@ $messageManager = new \Model\Managers\MessageManager();
                     <strong><?= htmlspecialchars($topic->getTitle(), ENT_QUOTES, 'UTF-8') ?></strong>
                 </a><br>
 
-                <?php 
+                <?php
                 // Récupérer le premier message du topic
                 $messages = $messageManager->findMessagesByTopic($topic->getId());
-                if ($messages instanceof \Traversable) {
-                    $messages = iterator_to_array($messages);
-                }
-                $firstMessage = !empty($messages) ? $messages[0] : null;
-                ?>
+            if ($messages instanceof \Traversable) {
+                $messages = iterator_to_array($messages);
+            }
+            $firstMessage = !empty($messages) ? $messages[0] : null;
+            ?>
 
                 <?php if ($firstMessage): ?>
                     <p>

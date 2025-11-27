@@ -24,14 +24,14 @@
             <a href="index.php?ctrl=home">Accueil</a>
             <a href="index.php?ctrl=forum&action=index">Liste des catégories</a>
 
-            <?php if(App\Session::isAdmin()): ?>
+            <?php if (App\Session::isAdmin()): ?>
                 <!-- Lien visible uniquement pour l'administrateur -->
                 <a href="index.php?ctrl=home&action=users">Voir la liste des membres</a>
             <?php endif; ?>
         </div>
 
         <div id="nav-right">
-            <?php if(App\Session::getUser()): ?>
+            <?php if (App\Session::getUser()): ?>
                 <!-- Utilisateur connecté -->
                 <a href="index.php?ctrl=security&action=profile">
                     <span class="fas fa-user"></span>&nbsp;<?= App\Session::getUser() ?>
