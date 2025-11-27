@@ -31,6 +31,7 @@ $messageManager = new \Model\Managers\MessageManager();
     <ul>
         <?php foreach ($topics as $topic): ?>
             <li>
+                <!-- Lien vers le topic -->
                 <a href="index.php?ctrl=forum&action=listMessage&id=<?= $topic->getId() ?>">
                     <strong><?= htmlspecialchars($topic->getTitle(), ENT_QUOTES, 'UTF-8') ?></strong>
                 </a><br>
@@ -46,18 +47,48 @@ $messageManager = new \Model\Managers\MessageManager();
 
                 <?php if ($firstMessage): ?>
                     <p>
-                        <em>Premier message :</em>
+                        <em>Premier message :</em><br>
                         <?= nl2br(htmlspecialchars($firstMessage->getTexte(), ENT_QUOTES, 'UTF-8')) ?>
                     </p>
                 <?php endif; ?>
 
-                <small>Créé le <?= htmlspecialchars($topic->getCreationDate()) ?></small>
-                <small>
-                    par 
-                    <a href="index.php?ctrl=security&action=showProfile&id=<?= $topic->getUser()->getId() ?>">
-                        <?= htmlspecialchars($topic->getUser()->getNickName(), ENT_QUOTES, 'UTF-8') ?>
-                    </a>
-                </small>
+                <div class="topic-meta">
+                    <small>Créé le <?= htmlspecialchars($topic->getCreationDate()) ?></small><br>
+                    <small>
+                        par 
+                        <a href="index.php?ctrl=security&action=showProfile&id=<?= $topic->getUser()->getId() ?>">
+                            <?= htmlspecialchars($topic->getUser()->getNickName(), ENT_QUOTES, 'UTF-8') ?>
+                        </a>
+                    </small>
+
+                    <!-- ✅ DROITS DE MODIFICATION -->
+                    <?php if (
+                        $user &&
+                        (
+                            in_array($user->getStatut(), ['Admin', 'Moderator'], true)
+                            || $user->getId() === $topic->getUser()->getId()
+                        )
+                    ): ?>
+                        <!-- Formulaire d'édition inline -->
+                        <form action="index.php?ctrl=forum&action=updateTopic&id=<?= $topic->getId() ?>" 
+                              method="post" 
+                              style="display:inline-block; margin-left:10px;">
+                            <input type="text" name="title" 
+                                   value="<?= htmlspecialchars($topic->getTitle()) ?>" 
+                                   required style="padding:3px;">
+                            <button type="submit" style="padding:3px 6px;">✏️ Modifier</button>
+                        </form>
+
+                        <!-- Bouton suppression -->
+                        <form class="delete-topic-form"
+                              action="index.php?ctrl=forum&action=deleteTopic&id=<?= $topic->getId() ?>"
+                              method="post" style="display:inline-block; margin-left:10px;">
+                            <button type="submit" onclick="return confirm('Voulez-vous vraiment supprimer ce topic ?');">
+                                🗑️ Supprimer
+                            </button>
+                        </form>
+                    <?php endif; ?>
+                </div>
             </li>
         <?php endforeach; ?>
     </ul>

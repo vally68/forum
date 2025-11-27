@@ -35,4 +35,17 @@ public function findTopicsByCategory($idCategory)
     );
 }
 
+public function update($id, $data)
+{
+    $sql = "UPDATE " . $this->tableName . "
+            SET title = :title
+            WHERE id_topic = :id";
+
+    DAO::update($sql, [
+        "title" => $data["title"],
+        "id"    => $id
+    ]);
+}
+
+
 }

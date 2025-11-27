@@ -28,4 +28,17 @@ class MessageManager extends Manager{
         $this->className
     );
 }
+
+public function update($id, $data)
+{
+    $sql = "UPDATE " . $this->tableName . "
+            SET texte = :texte
+            WHERE id_message = :id";
+
+    DAO::update($sql, [
+        "texte" => $data["texte"],
+        "id"    => $id
+    ]);
+}
+
 }
