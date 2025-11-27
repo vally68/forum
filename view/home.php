@@ -32,8 +32,20 @@ $lastMessages = isset($result["data"]["lastMessages"]) ? $result["data"]["lastMe
     <h1>BIENVENUE SUR LE FORUM</h1>
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit...</p>
     <div class="home-actions">
-      <a class="btn btn-primary" href="#">Se connecter</a>
-      <a class="btn btn-secondary" href="#">S'inscrire</a>
+             <div id="nav-right">
+            <?php if (App\Session::getUser()): ?>
+                <!-- Utilisateur connecté -->
+                <a href="index.php?ctrl=security&action=profile">
+                    <span class="fas fa-user"></span>&nbsp;<?= App\Session::getUser() ?>
+                </a>
+                <a class="btn btn-primary" href="index.php?ctrl=security&action=logout">Déconnexion</a>
+            <?php else: ?>
+                <!-- Utilisateur non connecté -->
+                <a class="btn btn-primary" href="index.php?ctrl=security&action=login">Connexion</a>
+                <a class="btn btn-secondary" href="index.php?ctrl=security&action=register">Inscription</a>
+            <?php endif; ?>
+        </div>
+    
     </div>
   </div>
 </section>
