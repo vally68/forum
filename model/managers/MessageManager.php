@@ -41,4 +41,27 @@ public function update($id, $data)
     ]);
 }
 
+public function findLastMessages(int $limit = 10)
+{
+    // Sécurise le LIMIT (pas de param nommé dans LIMIT)
+    $limit = max(1, (int)$limit);
+
+    $sql = "SELECT 
+                id_message AS id,
+                texte,
+                creationDate,
+                id_topic
+            FROM " . $this->tableName . "
+            ORDER BY creationDate DESC
+            LIMIT $limit";
+
+    return $this->getMultipleResults(
+        DAO::select($sql),   // pas de params
+        $this->className
+    );
+}
+
+
+
+
 }

@@ -310,7 +310,7 @@ footer a:hover {
 }
 
 .message-actions textarea {
-    width: 250px; /* largeur raisonnable pour ne pas déborder */
+    width: 250px; 
     padding: 5px;
     border-radius: 4px;
     border: 1px solid #ccc;
@@ -378,5 +378,50 @@ footer a:hover {
 
 .btn-delete:hover {
     background-color: #b02a37;
+}
+
+
+/* L’animation globale : translation verticale + légère oscillation */
+@keyframes slidePath {
+  0% {
+    transform: translateY(-10%) translateX(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110%) translateX(0);
+    opacity: 0;
+  }
+}
+
+/* --- ANIMATION MESSAGES SUR LE SERPENT --- */
+#messages-path {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.message-bubble {
+  position: absolute;
+  background: rgba(0, 123, 255, 0.92);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  text-decoration: none;
+  pointer-events: auto; 
+}
+.message-bubble:hover {
+  background: #0056b3;
 }
 

@@ -8,12 +8,26 @@ use App\Session;
 
 class HomeController extends AbstractController implements ControllerInterface {
 
-    public function index(){
-        return [
-            "view" => VIEW_DIR."home.php",
-            "meta_description" => "Page d'accueil du forum"
-        ];
-    }
+  public function index()
+{
+    $messageManager = new \Model\Managers\MessageManager();
+    $lastMessages = $messageManager->findLastMessages(10);
+
+    return [
+        "view" => VIEW_DIR . "home.php",
+        "meta_description" => "Page d'accueil du forum",
+        "data" => [
+            "lastMessages" => $lastMessages
+        ]
+    ];
+}
+
+// "serpent" est un complément qui renvoie la même vue + data
+public function serpent()
+{
+    return $this->index();
+}
+
         
     public function users(){
         $this->restrictTo("Admin");
@@ -87,6 +101,19 @@ public function deleteUser($id)
     $this->redirectTo("home","users");
 }
 
+// public function serpent()
+// {
+//     $messageManager = new \Model\Managers\MessageManager();
+//     $lastMessages = $messageManager->findLastMessages(10);
+
+//     return [
+//         "view" => VIEW_DIR . "home.php",
+//         "meta_description" => "Accueil du forum",
+//         "data" => [
+//             "lastMessages" => $lastMessages
+//         ]
+//     ];
+// }
 
 
 }
