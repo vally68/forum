@@ -1,4 +1,7 @@
 <?php
+header('Content-Type: text/html; charset=UTF-8');
+?>
+<?php
 $lastMessages = isset($result["data"]["lastMessages"]) ? $result["data"]["lastMessages"] : [];
 ?>
 
@@ -19,7 +22,7 @@ $lastMessages = isset($result["data"]["lastMessages"]) ? $result["data"]["lastMe
     <?php foreach ($lastMessages as $msg): ?>
       <a class="message-bubble"
          href="index.php?ctrl=forum&action=showMessage&id=<?= $msg->getId() ?>">
-        <?= htmlspecialchars($msg->getTexte(), ENT_QUOTES, 'UTF-8') ?>
+        <?= ($msg->getTexte()) ?>
       </a>
     <?php endforeach; ?>
   <?php else: ?>

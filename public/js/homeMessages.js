@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!path || !container) return;
 
   const bubbles = Array.from(container.querySelectorAll(".message-bubble"));
-  if (bubbles.length === 0) return;
+  if (bubbles.length === 1) return;
 
   // attendre que le SVG soit rendu
   requestAnimationFrame(() => {
