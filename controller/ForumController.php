@@ -218,7 +218,7 @@ class ForumController extends AbstractController implements ControllerInterface
             $this->redirectTo("forum", "index");
         }
 
-        // restriction par rôles (ton helper utilise déjà les labels de l'enum)
+        // restriction par rôles 
         $this->restrictTo(["Admin", "Moderator"]);
 
         $topicManager = new \Model\Managers\TopicManager();
