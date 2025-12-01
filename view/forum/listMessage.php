@@ -1,9 +1,14 @@
 <?php
+header('Content-Type: text/html; charset=UTF-8');
+?>
+
+
+<?php
 $topic = $result['data']['topic'];
 $messages = $result['data']['messages'];
 $user = \App\Session::getUser();
 ?>
-
+<meta charset="utf-8">
 <h1>Topic : <?= htmlspecialchars($topic->getTitle(), ENT_QUOTES, 'UTF-8') ?></h1>
 
 <?php if (!empty($messages)): ?>
@@ -11,15 +16,15 @@ $user = \App\Session::getUser();
         <?php foreach ($messages as $msg): ?>
             <li style="margin-bottom: 1.5rem;">
                 <div class="message-content">
-                    <?= nl2br(htmlspecialchars($msg->getTexte(), ENT_QUOTES, 'UTF-8')) ?><br>
+                    <?= ($msg->getTexte()) ?><br>
                     <small>Posté le <?= htmlspecialchars($msg->getCreationDate()) ?></small>
                 </div>
 
                 <?php if ($user): ?>
                     <?php
-                        // ✅ Autorisations :
+                        //  Autorisations :
                         //  - Admin / Modérateur : ok
-                        //  - Sinon : seulement le créateur du topic (puisque ta BDD ne stocke pas l'auteur du message)
+                        //  - Sinon : seulement le créateur du topic (puisque la BDD ne stocke pas l'auteur du message pour le moment)
                         $canEdit = (
                             in_array($user->getStatut(), ['Admin', 'Moderator'], true)
                             || ($topic->getUser() && $user->getId() === $topic->getUser()->getId())
@@ -32,7 +37,7 @@ $user = \App\Session::getUser();
                                   action="index.php?ctrl=forum&action=updateMessage&id=<?= $msg->getId() ?>"
                                   method="post" style="display:inline-block;margin-right:8px;">
                                 <div class="edit-row">
-                                    <textarea name="texte" rows="1" required><?= htmlspecialchars($msg->getTexte()) ?></textarea>
+                                    <textarea name="texte" rows="1" required><?= ($msg->getTexte()) ?></textarea>
                                     <button type="submit" class="btn-edit">✏️ Modifier</button>
                                 </div>
                             </form>
