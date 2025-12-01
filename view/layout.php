@@ -52,7 +52,7 @@
                 </main>
             </div>
             <footer>
-                <p>&copy; <?= date_create("now")->format("Y") ?> - <a href="#">Règlement du forum</a> - <a href="#">Mentions légales</a></p>
+                <p>&copy; <?= date_create("now")->format("Y") ?> - <a href="index.php?ctrl=security&action=rules">Règlement du forum</a> - <a href="index.php?ctrl=security&action=legal">Mentions légales</a></p>
             </footer>
         </div>
         <script

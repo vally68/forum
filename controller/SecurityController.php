@@ -228,4 +228,21 @@ class SecurityController extends AbstractController
         ];
     }
 
+    public function rules()
+{
+     return [
+            "view" => VIEW_DIR . "forum/rules.php",
+            "meta_description" => "Conditions Générales d’Utilisation"
+        ];
+}
+
+ public function legal() //générer la vue cgu
+    {
+        return [
+            "view" => VIEW_DIR . "forum/cgu.php",
+            "meta_description" => "Conditions Générales d’Utilisation"
+        ];
+    }
+
+
 }
