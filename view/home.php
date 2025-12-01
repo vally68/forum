@@ -33,7 +33,7 @@ $lastMessages = isset($result["data"]["lastMessages"]) ? $result["data"]["lastMe
 
   <div class="home-content">
     <h1>BIENVENUE SUR LE FORUM</h1>
-    <p>WELCOME TO THE JUNGLE!</p>
+    <p>WELCOME TO THE WEB-JUNGLE!</p>
     <div class="home-actions">
              <div id="nav-right">
             <?php if (App\Session::getUser()): ?>
