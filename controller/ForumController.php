@@ -267,7 +267,9 @@ class ForumController extends AbstractController implements ControllerInterface
         $messageManager->add([
             "texte"        => $texte,
             "creationDate" => date("Y-m-d H:i:s"),
-            "topic_id"     => $topicId
+            "topic_id"     => $topicId,
+          "user_id"      => $user->getId(),
+
         ]);
 
         // 5️ Redirige vers le topic après ajout
