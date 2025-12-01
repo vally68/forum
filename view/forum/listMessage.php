@@ -18,6 +18,12 @@ $user = \App\Session::getUser();
                 <div class="message-content">
                     <?= ($msg->getTexte()) ?><br>
                     <small>Posté le <?= htmlspecialchars($msg->getCreationDate()) ?></small>
+                    <small>Par 
+    <?= $msg->getUser() ? htmlspecialchars($msg->getUser()->getNickName()) : "<em>Utilisateur inconnu</em>" ?>
+</small>
+
+                   
+
                 </div>
 
                 <?php if ($user): ?>
@@ -39,7 +45,7 @@ $user = \App\Session::getUser();
                                 <div class="edit-row">
                                     <textarea name="texte" rows="1" required><?= ($msg->getTexte()) ?></textarea>
                                     <button type="submit" class="btn-edit">✏️ Modifier</button>
-                                </div>
+                                </div> 
                             </form>
 
                             <form action="index.php?ctrl=forum&action=deleteMessage&id=<?= $msg->getId() ?>"

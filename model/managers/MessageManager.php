@@ -21,7 +21,7 @@ class MessageManager extends Manager
         $sql = "
         SELECT *
         FROM message
-        WHERE id_topic = :idTopic
+        WHERE topic_id = :idTopic
         ORDER BY creationDate ASC
     ";
 
@@ -52,7 +52,7 @@ class MessageManager extends Manager
                 id_message AS id,
                 texte,
                 creationDate,
-                id_topic
+                topic_id
             FROM " . $this->tableName . "
             ORDER BY creationDate DESC
             LIMIT $limit";

@@ -158,7 +158,7 @@ class ForumController extends AbstractController implements ControllerInterface
         $messageManager->add([
              "texte"        => $content,
              "creationDate" => date("Y-m-d H:i:s"),
-             "id_topic"     => $topicId
+             "topic_id"     => $topicId
         ]);
 
         // 5. Message + redirection
@@ -267,7 +267,7 @@ class ForumController extends AbstractController implements ControllerInterface
         $messageManager->add([
             "texte"        => $texte,
             "creationDate" => date("Y-m-d H:i:s"),
-            "id_topic"     => $topicId
+            "topic_id"     => $topicId
         ]);
 
         // 5️ Redirige vers le topic après ajout
