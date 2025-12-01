@@ -30,7 +30,7 @@ $user = \App\Session::getUser();
                     <?php
                         //  Autorisations :
                         //  - Admin / Modérateur : ok
-                        //  - Sinon : seulement le créateur du topic (puisque la BDD ne stocke pas l'auteur du message pour le moment)
+                        
                         $canEdit = (
                             in_array($user->getStatut(), ['Admin', 'Moderator'], true)
                             || ($topic->getUser() && $user->getId() === $topic->getUser()->getId())
